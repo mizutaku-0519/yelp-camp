@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>キャンプ場の新規登録</title>
+  </head>
+  <body>
+    <h1>キャンプ場の新規登録</h1>
+    <form action="/campgrounds" method="post">
+      <div>
+        <label for="title">キャンプ場名</label>
+        <input
+          type="text"
+          id="title"
+          name="campground[title]"
+          placeholder="名前"
+        />
+      </div>
+      <div>
+        <label for="location">場所</label>
+        <input
+          type="text"
+          id="location"
+          name="campground[location]"
+          placeholder="所在地"
+        />
+      </div>
+      <button>登録</button>
+    </form>
+  </body>
+</html>
