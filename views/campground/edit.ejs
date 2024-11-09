@@ -3,7 +3,12 @@
 <div class="row">
   <h1 class="text-center">キャンプ場の更新</h1>
   <div class="offset-3 col-6">
-    <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="post">
+    <form
+      action="/campgrounds/<%= campground._id %>?_method=PUT"
+      method="post"
+      class="validated-form"
+      novalidate
+    >
       <div class="mb-3">
         <label for="title" class="form-label">キャンプ場名</label>
         <input
@@ -13,7 +18,9 @@
           name="campground[title]"
           placeholder="キャンプ場名"
           value="<%= campground.title %>"
+          required
         />
+        <div class="invalid-feedback">必須の入力項目です</div>
       </div>
       <div class="mb-3">
         <label for="location" class="form-label">所在地</label>
@@ -24,7 +31,9 @@
           name="campground[location]"
           placeholder="所在地"
           value="<%= campground.location %>"
+          required
         />
+        <div class="invalid-feedback">必須の入力項目です</div>
       </div>
       <div class="mb-3">
         <label for="price" class="form-label">価格</label>
@@ -38,7 +47,9 @@
             name="campground[price]"
             aria-describedby="price-en"
             value="<%= campground.price %>"
+            required
           />
+          <div class="invalid-feedback">必須の入力項目です</div>
         </div>
       </div>
 
@@ -51,7 +62,9 @@
           name="campground[imageUrl]"
           placeholder="画像URL"
           value="<%= campground.imageUrl %>"
+          required
         />
+        <div class="invalid-feedback">必須の入力項目です</div>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">キャンプ場の説明</label>
@@ -60,9 +73,11 @@
           type="text"
           id="description"
           name="campground[description]"
+          required
         >
 <%= campground.description %></textarea
         >
+        <div class="invalid-feedback">必須の入力項目です</div>
       </div>
       <button class="btn btn-warning">更新</button>
     </form>
