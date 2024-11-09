@@ -1,20 +1,32 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= campground.title %></title>
-  </head>
-  <body>
-    <h1><%= campground.title %></h1>
-    <p><%= campground.location %></p>
-    <a href="/campgrounds/<%= campground._id %>/edit">編集する</a>
-    <a href="/campgrounds">一覧に戻る</a>
-    <form
-      action="/campgrounds/<%= campground._id %>?_method=DELETE"
-      method="post"
-    >
-      <button>削除する</button>
-    </form>
-  </body>
-</html>
+<% layout("./layouts/boilerplate") -%>
+
+<div class="row">
+  <div class="offset-3 col-6">
+    <div class="card mb-3">
+      <img src="<%= campground.imageUrl %>" class="card-img-top" />
+      <div class="card-body">
+        <h5 class="card-title"><%= campground.title %></h5>
+        <p class="card-text"><%= campground.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= campground.location %></li>
+        <li class="list-group-item"><%= campground.price %>円/泊</li>
+      </ul>
+      <div class="card-body">
+        <div class="d-inline-flex">
+          <a
+            class="btn btn-info me-3"
+            href="/campgrounds/<%= campground._id %>/edit"
+            >編集する</a
+          >
+          <form
+            action="/campgrounds/<%= campground._id %>?_method=DELETE"
+            method="post"
+          >
+            <button class="btn btn-danger">削除する</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
