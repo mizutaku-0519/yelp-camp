@@ -3,29 +3,34 @@
 <div class="row">
   <div class="col-6 offset-3">
     <h1 class="text-center">キャンプ場の更新</h1>
-    <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+    <form action="/campgrounds/<%= campground._id %>?_method=PUT" class="needs-validation" novalidate method="POST">
       <div class="mb-3">
         <label class="form-label" for="title">キャンプ場名</label>
-        <input class="form-control" type="text" id="title" name="campground[title]" value="<%= campground.title %>" />
+        <input class="form-control" type="text" id="title" name="campground[title]" value="<%= campground.title %>" required />
+        <div class="invalid-feedback">キャンプ場名は必須です</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="location">場所</label>
-        <input class="form-control" type="text" id="location" name="campground[location]" value="<%= campground.location %>" />
+        <input class="form-control" type="text" id="location" name="campground[location]" value="<%= campground.location %>" required />
+        <div class="invalid-feedback">場所は必須です</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="imageUrl">画像URL</label>
-        <input class="form-control" type="text" id="imageUrl" name="campground[imageUrl]" value="<%= campground.imageUrl %>" />
+        <input class="form-control" type="text" id="imageUrl" name="campground[imageUrl]" value="<%= campground.imageUrl %>" required />
+        <div class="invalid-feedback">画像URLは必須です</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">価格</label>
         <div class="input-group">
           <span class="input-group-text" id="price-label">¥</span>
-          <input type="number" class="form-control" id="price" name="campground[price]" placeholder="0" aria-label="price-label" aria-describedby="price-label" value="<%= campground.price %>" />
+          <input type="number" class="form-control" id="price" name="campground[price]" placeholder="0" aria-label="price-label" aria-describedby="price-label" value="<%= campground.price %>" required />
+          <div class="invalid-feedback">価格は必須です</div>
         </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">説明文</label>
-        <textarea class="form-control" type="text" id="description" name="campground[description]"><%= campground.description %></textarea>
+        <textarea class="form-control" type="text" id="description" name="campground[description]" required><%= campground.description %></textarea>
+        <div class="invalid-feedback">説明文は必須です</div>
       </div>
       <button class="btn btn-info">更新する</button>
     </form>

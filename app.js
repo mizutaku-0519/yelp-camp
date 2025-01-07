@@ -4,6 +4,8 @@ const paht = require("path");
 const Campground = require("./models/campground");
 const path = require("path");
 const ejsMate = require("ejs-mate");
+const ExpressError = require("./utils/ExpressError");
+const catchAsync = require("./utils/catchAsync");
 const app = express();
 const methodOverride = require("method-override");
 
@@ -26,44 +28,77 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/campgrounds", async (req, res) => {
-  const campgrounds = await Campground.find({});
-  res.render("campgrounds/index", { campgrounds });
-});
+app.get(
+  "/campgrounds",
+  catchAsync(async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render("campgrounds/index", { campgrounds });
+  })
+);
 
 app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new");
 });
 
-app.get("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  res.render("campgrounds/show", { campground });
+app.get(
+  "/campgrounds/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    res.render("campgrounds/show", { campground });
+  })
+);
+
+app.get(
+  "/campgrounds/:id/edit",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    res.render("campgrounds/edit", { campground });
+  })
+);
+
+app.post(
+  "/campgrounds",
+  catchAsync(async (req, res) => {
+    if (!req.body.campground) {
+      throw new ExpressError("キャンプ場の登録エラーです", 500);
+    }
+    const { campground } = req.body;
+    const c = new Campground(campground);
+    await c.save();
+    res.redirect("/campgrounds");
+  })
+);
+
+app.put(
+  "/campgrounds/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+    res.redirect(`/campgrounds/${id}`);
+  })
+);
+
+app.delete(
+  "/campgrounds/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await Campground.findByIdAndDelete(id);
+    res.redirect("/campgrounds");
+  })
+);
+
+app.all("*", (req, res) => {
+  throw new ExpressError("ページが見つかりません", 404);
 });
 
-app.get("/campgrounds/:id/edit", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  res.render("campgrounds/edit", { campground });
-});
-
-app.post("/campgrounds", async (req, res) => {
-  const { campground } = req.body;
-  const c = new Campground(campground);
-  await c.save();
-  res.redirect("/campgrounds");
-});
-
-app.put("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  await Campground.findByIdAndUpdate(id, { ...req.body.campground });
-  res.redirect(`/campgrounds/${id}`);
-});
-
-app.delete("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  await Campground.findByIdAndDelete(id);
-  res.redirect("/campgrounds");
+app.use((err, req, res, next) => {
+  const { status = 500 } = err;
+  if (!err.message) {
+    message = "問題が発生しました";
+  }
+  res.status(status).render("error", { err });
 });
 
 app.listen(3000, () => {
