@@ -6,6 +6,8 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
+const Joi = require("joi");
+const { campgroundSchema } = require("./schemas");
 const app = express();
 const methodOverride = require("method-override");
 
@@ -23,6 +25,20 @@ app.set("view engine", "ejs");
 app.set(path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
+const validateCampground = (req, res, next) => {
+  const result = campgroundSchema.validate(req.body);
+  if (result.error) {
+    const msg = result.error.details
+      .map(function (detail) {
+        return detail.message;
+      })
+      .join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -60,10 +76,8 @@ app.get(
 
 app.post(
   "/campgrounds",
+  validateCampground,
   catchAsync(async (req, res) => {
-    if (!req.body.campground) {
-      throw new ExpressError("キャンプ場の登録エラーです", 500);
-    }
     const { campground } = req.body;
     const c = new Campground(campground);
     await c.save();
@@ -73,6 +87,7 @@ app.post(
 
 app.put(
   "/campgrounds/:id",
+  validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndUpdate(id, { ...req.body.campground });
