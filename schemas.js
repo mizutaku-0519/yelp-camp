@@ -15,4 +15,4 @@ module.exports.reviewSchema = Joi.object({
     rating: Joi.number().max(5).min(1).required(),
     text: Joi.string().required(),
   }).required(),
-}).required;
+}).required();

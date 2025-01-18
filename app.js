@@ -128,6 +128,13 @@ app.post(
   })
 );
 
+app.delete("/campgrounds/:id/review/:reviewId", async (req, res) => {
+  const { id, reviewId } = req.params;
+  await Campground.findByIdAndUpdate(id, { $pull: { review: reviewId } });
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/campgrounds/${id}`);
+});
+
 app.all("*", (req, res) => {
   throw new ExpressError("ページが見つかりません", 404);
 });
