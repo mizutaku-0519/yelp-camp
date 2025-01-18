@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const paht = require("path");
 const Campground = require("./models/campground");
+const Review = require("./models/review");
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
@@ -60,7 +61,7 @@ app.get(
   "/campgrounds/:id",
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate("review");
     res.render("campgrounds/show", { campground });
   })
 );
@@ -103,6 +104,16 @@ app.delete(
     res.redirect("/campgrounds");
   })
 );
+
+app.post("/campgrounds/:id/review", async (req, res) => {
+  const review = new Review(req.body.review);
+  await review.save();
+  const { id } = req.params;
+  const campground = await Campground.findById(id);
+  campground.review.push(review);
+  await campground.save();
+  res.redirect(`/campgrounds/${campground._id}`);
+});
 
 app.all("*", (req, res) => {
   throw new ExpressError("ページが見つかりません", 404);
