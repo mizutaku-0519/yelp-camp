@@ -8,7 +8,7 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
 const Joi = require("joi");
-const { campgroundSchema } = require("./schemas");
+const { campgroundSchema, reviewSchema } = require("./schemas");
 const app = express();
 const methodOverride = require("method-override");
 
@@ -36,6 +36,15 @@ const validateCampground = (req, res, next) => {
       })
       .join(",");
     throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const result = reviewSchema.validate(req.body);
+  if (result.error) {
+    throw new ExpressError("レビュー投稿にエラーがあります", 400);
   } else {
     next();
   }
@@ -105,15 +114,19 @@ app.delete(
   })
 );
 
-app.post("/campgrounds/:id/review", async (req, res) => {
-  const review = new Review(req.body.review);
-  await review.save();
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  campground.review.push(review);
-  await campground.save();
-  res.redirect(`/campgrounds/${campground._id}`);
-});
+app.post(
+  "/campgrounds/:id/review",
+  validateReview,
+  catchAsync(async (req, res) => {
+    const review = new Review(req.body.review);
+    await review.save();
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    campground.review.push(review);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
+  })
+);
 
 app.all("*", (req, res) => {
   throw new ExpressError("ページが見つかりません", 404);
