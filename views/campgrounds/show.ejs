@@ -1,8 +1,8 @@
 <% layout("./layouts/boilerplate") %>
 
 <div class="row">
-  <div class="col-6 offset-3">
-    <div class="card">
+  <div class="col-6">
+    <div class="card mb-3">
       <img src="<%= campground.imageUrl %>" class="img-fluid card-img-top" />
       <div class="card-body">
         <h5 class="card-title"><%= campground.title %></h5>
@@ -19,5 +19,31 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <div class="col-6">
+    <!-- レビュー -->
+    <form action="/campgrounds/<%= campground._id %>/review" method="POST" class="mb-3">
+      <div class="mb-3">
+        <label class="form-label" for="rating">評価</label>
+        <input type="range" class="form-range" id="rating" name="review[rating]" max="5" min="1" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="text">コメント</label>
+        <textarea class="form-control" name="review[text]" id="text" rows="5"></textarea>
+      </div>
+      <button class="btn btn-success">投稿する</button>
+    </form>
+    <!-- カード -->
+    <% for(let review of campground.review) { %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <p class="card-title">評価：<%= review.rating %></p>
+        <p class="card-text">コメント：<%= review.text %></p>
+      </div>
+    </div>
+    <% } %>
+    <!-- ここまでカード -->
+    <!-- ここまでレビュー -->
   </div>
 </div>
