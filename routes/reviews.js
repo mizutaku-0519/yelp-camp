@@ -26,6 +26,7 @@ router.post(
     const campground = await Campground.findById(id);
     campground.review.push(review);
     await campground.save();
+    req.flash("success", "レビューを投稿しました");
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -34,6 +35,7 @@ router.delete("/:reviewId", async (req, res) => {
   const { id, reviewId } = req.params;
   await Campground.findByIdAndUpdate(id, { $pull: { review: reviewId } });
   await Review.findByIdAndDelete(reviewId);
+  req.flash("error", "レビューを削除しました");
   res.redirect(`/campgrounds/${id}`);
 });
 
