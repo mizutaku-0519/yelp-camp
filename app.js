@@ -13,6 +13,8 @@ const app = express();
 const methodOverride = require("method-override");
 const campgroundsRoute = require("./routes/campgrounds");
 const reviewRoute = require("./routes/reviews");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 mongoose
   .connect("mongodb://localhost:27017/yelp-camp")
@@ -23,12 +25,29 @@ mongoose
     console.log(e);
   });
 
+const sessionConfig = {
+  secret: "mysecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set(path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 app.use("/campgrounds", campgroundsRoute);
 app.use("/campgrounds/:id/review", reviewRoute);
