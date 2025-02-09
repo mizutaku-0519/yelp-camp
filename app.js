@@ -53,6 +53,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
@@ -61,12 +62,6 @@ app.use((req, res, next) => {
 app.use("/", userRoute);
 app.use("/campgrounds", campgroundsRoute);
 app.use("/campgrounds/:id/review", reviewRoute);
-
-app.get("/fakeregister", async (req, res) => {
-  const user = new User({ email: "mizu@gmail.com", username: "taku" });
-  const newUser = await User.register(user, "pass");
-  res.send(newUser);
-});
 
 app.all("*", (req, res) => {
   throw new ExpressError("ページが見つかりません", 404);
