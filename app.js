@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const paht = require("path");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
+const User = require("./models/user");
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
@@ -16,7 +17,6 @@ const reviewRoute = require("./routes/reviews");
 const userRoute = require("./routes/user");
 const session = require("express-session");
 const flash = require("connect-flash");
-const User = require("./models/user");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
@@ -61,6 +61,12 @@ app.use((req, res, next) => {
 app.use("/", userRoute);
 app.use("/campgrounds", campgroundsRoute);
 app.use("/campgrounds/:id/review", reviewRoute);
+
+app.get("/fakeregister", async (req, res) => {
+  const user = new User({ email: "mizu@gmail.com", username: "taku" });
+  const newUser = await User.register(user, "pass");
+  res.send(newUser);
+});
 
 app.all("*", (req, res) => {
   throw new ExpressError("ページが見つかりません", 404);
