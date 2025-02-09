@@ -14,6 +14,7 @@ const app = express();
 const methodOverride = require("method-override");
 const campgroundsRoute = require("./routes/campgrounds");
 const reviewRoute = require("./routes/reviews");
+const userRoute = require("./routes/user");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/", userRoute);
 app.use("/campgrounds", campgroundsRoute);
 app.use("/campgrounds/:id/review", reviewRoute);
 
