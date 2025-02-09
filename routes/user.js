@@ -21,4 +21,23 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.get("/login", (req, res) => {
+  res.render("users/login");
+});
+
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "ログアウトしました");
+    res.redirect("/campgrounds");
+  });
+});
+
+router.post("/login", passport.authenticate("local", { failureFlash: true, failureRedirect: "/login" }), (req, res) => {
+  req.flash("success", "ログインに成功しました");
+  res.redirect("/campgrounds");
+});
+
 module.exports = router;
