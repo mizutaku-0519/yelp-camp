@@ -1,15 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const paht = require("path");
-const Campground = require("./models/campground");
-const Review = require("./models/review");
-const User = require("./models/user");
+
 const path = require("path");
+const User = require("./models/user");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
-const Joi = require("joi");
-const { campgroundSchema, reviewSchema } = require("./schemas");
 const app = express();
 const methodOverride = require("method-override");
 const campgroundsRoute = require("./routes/campgrounds");
@@ -53,6 +49,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
