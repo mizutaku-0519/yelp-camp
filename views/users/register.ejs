@@ -1,0 +1,24 @@
+<% layout("./layouts/boilerplate") %>
+
+<div class="row">
+  <div class="offset-3 col-6">
+    <%- include("../partials/flash") -%>
+
+    <h2 class="text-center">会員登録</h2>
+    <form action="/register" class="needs-validation" method="POST" novalidate>
+      <div class="mb-3">
+        <label for="username" class="form-label">ユーザー名</label>
+        <input type="text" name="username" id="usename" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">メールアドレス</label>
+        <input type="email" name="email" id="email" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">パスワード</label>
+        <input type="password" name="password" id="password" class="form-control" required />
+      </div>
+      <button class="btn btn-success">登録</button>
+    </form>
+  </div>
+</div>
