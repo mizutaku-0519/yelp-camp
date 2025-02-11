@@ -12,10 +12,14 @@ const userSchema = new Schema({
 
 userSchema.plugin(passportLocalMongoose, {
   errorMessages: {
-    IncorrectUsernameError: "ユーザー名またはパスワードが間違っています",
+
+
+    UserExistsError: "すでに登録済みのユーザーです",
     IncorrectPasswordError: "ユーザー名またはパスワードが間違っています",
-    UserExistsError: "すでに存在しているユーザーです",
+    IncorrectUsernameError: "ユーザー名またはパスワードが間違っています",
+    MissingUsernameError: "ユーザーが存在しません",
   },
 });
+
 
 module.exports = mongoose.model("User", userSchema);
