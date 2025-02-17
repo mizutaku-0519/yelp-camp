@@ -24,6 +24,7 @@ const seedDB = async () => {
       imageUrl: "https://storage.googleapis.com/rakuten-camp-pro-assets/uploads%2Fd30c70e5742ccb59a15db3126371c879.jpeg",
       location: `${cities[randomCitiIndex].prefecture}${cities[randomCitiIndex].city}`,
       description: "日本一!? ​海に近いキャンプ場。スロープを降りると目の前は砂浜！そして、海！赤沢海水浴場の真上に位置する絶景キャンプ場です。テントサウナも持ち込み可。",
+      author: "67b207a5ca74641633e97001",
     });
     await camp.save();
   }
