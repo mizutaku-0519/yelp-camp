@@ -53,7 +53,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
   next();
 };
 
-module.exportsvalidateReview = (req, res, next) => {
+module.exports.validateReview = (req, res, next) => {
   const result = reviewSchema.validate(req.body);
   if (result.error) {
     throw new ExpressError("レビュー投稿にエラーがあります", 400);
