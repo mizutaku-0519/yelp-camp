@@ -4,17 +4,7 @@ const Review = require("../models/review");
 const ExpressError = require("../utils/ExpressError");
 const Campground = require("../models/campground");
 const catchAsync = require("../utils/catchAsync");
-const { reviewSchema } = require("../schemas");
-const { isLogedin, isReviewAuthor } = require("../middleware");
-
-const validateReview = (req, res, next) => {
-  const result = reviewSchema.validate(req.body);
-  if (result.error) {
-    throw new ExpressError("レビュー投稿にエラーがあります", 400);
-  } else {
-    next();
-  }
-};
+const { validateReview, isLogedin, isReviewAuthor } = require("../middleware");
 
 router.post(
   "/",
