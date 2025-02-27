@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-6 offset-3">
     <h1 class="text-center">キャンプ場の新規作成</h1>
-    <form action="/campgrounds" class="needs-validation" method="POST" novalidate>
+    <form action="/campgrounds" class="needs-validation" method="POST" enctype="multipart/form-data" novalidate>
       <div class="mb-3">
         <label class="form-label" for="title">キャンプ場名</label>
         <input class="form-control" type="text" id="title" name="campground[title]" required />
@@ -15,8 +15,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="imageUrl">画像URL</label>
-        <input class="form-control" type="text" id="imageUrl" name="campground[imageUrl]" required />
-        <div class="invalid-feedback">画像URLは必須です</div>
+        <input class="form-control" type="file" id="image" name="image" required />
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">価格</label>

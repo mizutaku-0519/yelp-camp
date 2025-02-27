@@ -5,8 +5,17 @@ const Campground = require("../models/campground");
 const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const { validateCampground, isLogedin, isAuthor } = require("../middleware");
+const multer = require("multer");
+const upload = multer({ dest: "pictures" });
 
-router.route("/").get(catchAsync(campground.index)).post(isLogedin, validateCampground, catchAsync(campground.createCampground));
+router
+  .route("/")
+  .get(catchAsync(campground.index))
+  // .post(isLogedin, validateCampground, catchAsync(campground.createCampground));
+  .post(upload.single("image"), (req, res) => {
+    console.log(req.body, req.file);
+    res.send("受け付けました");
+  });
 
 router.get("/new", isLogedin, campground.renderNewForm);
 
