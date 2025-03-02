@@ -31,6 +31,10 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.createCampground = async (req, res) => {
   const { campground } = req.body;
   const c = new Campground(campground);
+  c.images = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
   c.author = req.user._id;
   await c.save();
   req.flash("success", "キャンプ場の登録が完了しました");
