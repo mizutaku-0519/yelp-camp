@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-6 offset-3">
     <h1 class="text-center">キャンプ場の更新</h1>
-    <form action="/campgrounds/<%= campground._id %>?_method=PUT" class="needs-validation" novalidate method="POST">
+    <form action="/campgrounds/<%= campground._id %>?_method=PUT" class="needs-validation" enctype="multipart/form-data" novalidate method="POST">
       <div class="mb-3">
         <label class="form-label" for="title">キャンプ場名</label>
         <input class="form-control" type="text" id="title" name="campground[title]" value="<%= campground.title %>" required />
@@ -15,9 +15,9 @@
         <div class="invalid-feedback">場所は必須です</div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="imageUrl">画像URL</label>
-        <input class="form-control" type="text" id="imageUrl" name="campground[imageUrl]" value="<%= campground.imageUrl %>" required />
-        <div class="invalid-feedback">画像URLは必須です</div>
+        <label class="form-label" for="images">画像ファイル</label>
+        <input class="form-control" type="file" id="images" name="images" multiple required />
+        <div class="invalid-feedback">画像は必須です</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">価格</label>

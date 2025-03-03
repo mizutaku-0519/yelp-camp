@@ -13,7 +13,7 @@ router.route("/").get(catchAsync(campground.index)).post(isLogedin, upload.array
 
 router.get("/new", isLogedin, campground.renderNewForm);
 
-router.route("/:id").get(catchAsync(campground.showCampground)).put(isLogedin, isAuthor, validateCampground, catchAsync(campground.editCampground)).delete(isLogedin, isAuthor, catchAsync(campground.deleteCampground));
+router.route("/:id").get(catchAsync(campground.showCampground)).put(isLogedin, isAuthor, upload.array("images"), validateCampground, catchAsync(campground.editCampground)).delete(isLogedin, isAuthor, catchAsync(campground.deleteCampground));
 
 router.get("/:id/edit", isLogedin, isAuthor, catchAsync(campground.renderEditForm));
 

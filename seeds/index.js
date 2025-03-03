@@ -21,7 +21,16 @@ const seedDB = async () => {
     const camp = new Campground({
       title: `${descriptors[randomSeeds(descriptors)]}・${places[randomSeeds(places)]}`,
       price: randomPrice,
-      imageUrl: "https://storage.googleapis.com/rakuten-camp-pro-assets/uploads%2Fd30c70e5742ccb59a15db3126371c879.jpeg",
+      images: [
+        {
+          url: "https://res.cloudinary.com/droog3czu/image/upload/v1741011700/YELPCAMP03/wt63m2mr0emgevju7vhd.jpg",
+          filename: "YELPCAMP03/wt63m2mr0emgevju7vhd",
+        },
+        {
+          url: "https://res.cloudinary.com/droog3czu/image/upload/v1741011701/YELPCAMP03/lk0dl7w6fvtnfnbiwhcg.jpg",
+          filename: "YELPCAMP03/lk0dl7w6fvtnfnbiwhcg",
+        },
+      ],
       location: `${cities[randomCitiIndex].prefecture}${cities[randomCitiIndex].city}`,
       description: "日本一!? ​海に近いキャンプ場。スロープを降りると目の前は砂浜！そして、海！赤沢海水浴場の真上に位置する絶景キャンプ場です。テントサウナも持ち込み可。",
       author: "67b207a5ca74641633e97001",

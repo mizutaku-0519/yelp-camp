@@ -36,6 +36,7 @@ module.exports.createCampground = async (req, res) => {
     filename: f.filename,
   }));
   c.author = req.user._id;
+  console.log(c);
   await c.save();
   req.flash("success", "キャンプ場の登録が完了しました");
   res.redirect("/campgrounds");
@@ -43,7 +44,13 @@ module.exports.createCampground = async (req, res) => {
 
 module.exports.editCampground = async (req, res) => {
   const { id } = req.params;
-  await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+  const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+  const imgs = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  campground.images.push(...imgs);
+  await campground.save();
   req.flash("success", "キャンプ場の更新が完了しました");
   res.redirect(`/campgrounds/${id}`);
 };
